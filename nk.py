@@ -49,22 +49,17 @@ class NK(object):
             
     def get_hillclimb_values(self, states, state_loci=None):
         '''Generate values for each state with each of `loci` flipped.'''
-<<<<<<< Updated upstream
         if loci is None:
             loci = [self.loci for state in states]
         if len(loci) != len(states):
             raise ValueError
-=======
-        if state_loci is None:
-            state_loci = [self.loci] * len(states)
->>>>>>> Stashed changes
         N = self.N
         base_locus_values = [0.0] * N
         result_states = []
         result_values = []
         depends_on = self.depends_on
         dependence = self.dependence
-        for state_num, state in enumerate(states):
+        for state in states:
             # Calculate value of each locus before hill climbing
             for n in self.loci:
                 label = tuple([state[i] for i in dependence[n]])
@@ -75,11 +70,7 @@ class NK(object):
                     self.values[n][label] = v
                 base_locus_values[n] = v
             # Alter each locus
-<<<<<<< Updated upstream
             for l in loci[state_num]:
-=======
-            for l in state_loci[state_num]:
->>>>>>> Stashed changes
                 locus_values = list(base_locus_values)
                 s = list(state)
                 s[l] = 1 - s[l]
