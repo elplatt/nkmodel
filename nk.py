@@ -47,7 +47,7 @@ class NK(object):
             results[state_num] = total_value / N
         return results
             
-    def get_hillclimb_values(self, states, state_loci=None):
+    def get_hillclimb_values(self, states, loci=None):
         '''Generate values for each state with each of `loci` flipped.'''
         if loci is None:
             loci = [self.loci for state in states]
@@ -59,7 +59,7 @@ class NK(object):
         result_values = []
         depends_on = self.depends_on
         dependence = self.dependence
-        for state in states:
+        for state_num, state in enumerate(states):
             # Calculate value of each locus before hill climbing
             for n in self.loci:
                 label = tuple([state[i] for i in dependence[n]])
