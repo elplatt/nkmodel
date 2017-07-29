@@ -60,6 +60,8 @@ class NK(object):
         depends_on = self.depends_on
         dependence = self.dependence
         for state_num, state in enumerate(states):
+            state_values = []
+            state_states = []
             # Calculate value of each locus before hill climbing
             for n in self.loci:
                 label = tuple([state[i] for i in dependence[n]])
@@ -82,6 +84,8 @@ class NK(object):
                         v = random.random()
                         self.values[n][label] = v
                     locus_values[n] = v
-                result_states.append(s)
-                result_values.append(sum(locus_values) / float(N))
+                state_states.append(s)
+                state_values.append(sum(locus_values) / float(N))
+            result_states.append(state_states)
+            result_values.append(state_values)
         return result_states, result_values
