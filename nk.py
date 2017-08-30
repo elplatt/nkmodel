@@ -28,12 +28,12 @@ class NK(object):
         return total_value
     
     def get_values(self, states):
-        results = [0] * len(states)
+        results = dict(states)
         dependence = self.dependence
         values = self.values
         loci = self.loci
         N = float(self.N)
-        for state_num, state in enumerate(states):
+        for state_num, state in states.iteritems():
             total_value = 0.0
             for n in loci:
                 label = [state[i] for i in dependence[n]]
@@ -55,11 +55,11 @@ class NK(object):
             raise ValueError
         N = self.N
         base_locus_values = [0.0] * N
-        result_states = []
-        result_values = []
+        result_states = {}
+        result_values = {}
         depends_on = self.depends_on
         dependence = self.dependence
-        for state_num, state in enumerate(states):
+        for state_num, state in states.iteritems():
             state_values = []
             state_states = []
             # Calculate value of each locus before hill climbing
@@ -86,6 +86,6 @@ class NK(object):
                     locus_values[n] = v
                 state_states.append(s)
                 state_values.append(sum(locus_values) / float(N))
-            result_states.append(state_states)
-            result_values.append(state_values)
+            result_states[state_num] = state_states
+            result_values[state_num] = state_values
         return result_states, result_values
