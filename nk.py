@@ -50,7 +50,7 @@ class NK(object):
     def get_hillclimb_values(self, states, loci=None):
         '''Generate values for each state with each of `loci` flipped.'''
         if loci is None:
-            loci = [self.loci for state in states]
+            loci = dict([(state, self.loci) for state in states])
         if len(loci) != len(states):
             raise ValueError
         N = self.N
