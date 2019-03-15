@@ -33,7 +33,7 @@ class NK(object):
         values = self.values
         loci = self.loci
         N = float(self.N)
-        for state_num, state in states.iteritems():
+        for state_num, state in states.items():
             total_value = 0.0
             for n in loci:
                 label = [state[i] for i in dependence[n]]
@@ -59,7 +59,7 @@ class NK(object):
         result_values = {}
         depends_on = self.depends_on
         dependence = self.dependence
-        for state_num, state in states.iteritems():
+        for state_num, state in states.items():
             state_values = []
             state_states = []
             # Calculate value of each locus before hill climbing

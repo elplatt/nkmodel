@@ -1,6 +1,6 @@
 import unittest
 
-import nk
+import elp_nkmodel.nk as nk
 
 stub_values = [
     {(0,0):0.2, (0,1):0.3, (1,0):0.7, (1,1):0.1},
