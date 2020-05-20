@@ -1,0 +1,8 @@
+README.md
+setup.py
+nkmodel/__init__.py
+nkmodel/nk.py
+nkmodel.egg-info/PKG-INFO
+nkmodel.egg-info/SOURCES.txt
+nkmodel.egg-info/dependency_links.txt
+nkmodel.egg-info/top_level.txt

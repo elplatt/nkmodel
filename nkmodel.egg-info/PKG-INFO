@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: nkmodel
+Version: 0.0.1
+Summary: Implementation of Kauffman NK Model
+Home-page: https://github.com/elplatt/nkmodel
+Author: Edward L Platt
+Author-email: ed@elplatt.com
+License: UNKNOWN
+Description: # nkmodel
+        ## Python implementation of Kauffman's NK model
+        Copyright (C) 2017-2020 Edward L. Platt <ed@elplatt.com>.
+        Distributed under the BSD 3-Clause license.
+        See LICENSE for more information.
+        
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
