@@ -1,14 +1,27 @@
 import random
 
 class NK(object):
+    """The NK class produces objects representing a single NK model.
+    
+    Constructor params:
+    N: The number of loci
+    K: The number of loci, in addition to self, each locus depends on
+    
+    For each locus, a lookup table maps K+1 length tuples to values in [0,1].
+    These tuples are the state values of that loci's _concern_ (the K+1 loci it depends on),
+    in order of increasing index.
+    """
     
     def __init__(self, N, K):
         self.N = N
         self.K = K
         self.loci = range(N)
         self.values = [{} for n in self.loci]
-        self.dependence = [sorted([n] + random.sample(set(self.loci) - set([n]), K)) for n in self.loci]
-        # Reverse lookup for dependence
+        # For locus i, dependence[i] stores the indeces of loci it depends on
+        self.dependence = [
+            sorted([n] + random.sample(set(self.loci) - set([n]), K))
+            for n in self.loci]
+        # Reverse lookup for dependence, depends_on[i] gives indeces of all loci that depend on i
         self.depends_on = [set() for n in self.loci]
         for n in self.loci:
             for d in self.dependence[n]:
@@ -17,6 +30,7 @@ class NK(object):
     def get_value(self, state):
         total_value = 0.0
         for n in self.loci:
+            # Construct locus 
             label = tuple([state[i] for i in self.dependence[n]])
             try:
                 total_value += self.values[n][label]
@@ -46,7 +60,7 @@ class NK(object):
                     total_value += v
             results[state_num] = total_value / N
         return results
-            
+      
     def get_hillclimb_values(self, states, loci=None):
         '''Generate values for each state with each of `loci` flipped.'''
         if loci is None:
