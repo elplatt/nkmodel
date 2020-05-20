@@ -1,1 +1,1 @@
-from nk import *
+from .nk import *
