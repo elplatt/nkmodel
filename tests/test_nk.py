@@ -1,6 +1,5 @@
+import nkmodel as nk
 import unittest
-
-import nk
 
 stub_values = [
     {(0,0):0.2, (0,1):0.3, (1,0):0.7, (1,1):0.1},
