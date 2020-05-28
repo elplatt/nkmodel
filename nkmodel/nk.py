@@ -42,6 +42,13 @@ class NK(object):
         return total_value
     
     def get_values(self, states):
+        """Get the NK model values for each agent in states.
+        
+        Parameters
+        states: a dict mapping agent ids to states.
+        
+        Returns: a dict mapping agent ids to nk model values.
+        """
         results = dict(states)
         dependence = self.dependence
         values = self.values
@@ -103,3 +110,33 @@ class NK(object):
             result_states[state_num] = state_states
             result_values[state_num] = state_values
         return result_states, result_values
+    
+    def get_global_max(self):
+        # Prevent unnecessary lookups
+        loci = self.loci
+        values = self.values
+        dependence = self.dependence
+        
+        # Loop through all states
+        max_value = 0.0
+        max_state = None
+        all_states = itertools.product((0, 1), repeat=self.N)
+        for state in all_states:
+            total_value = 0.0
+            # Calculate value of each locus
+            for n in loci:
+                # Construct locus lookup key
+                label = tuple([state[i] for i in dependence[n]])
+                try:
+                    total_value += values[n][label]
+                except KeyError:
+                    # If key has not been looked up before, generate a value
+                    v = random.random()
+                    values[n][label] = v
+                    total_value += v
+            # Compare state value to total value
+            if total_value > max_value:
+                max_value = total_value
+                max_state = state
+        # Divide by N to normalize model value
+        return (max_state, max_value / self.N)
