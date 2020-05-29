@@ -1,3 +1,4 @@
+import itertools
 import random
 
 class NK(object):
@@ -138,5 +139,7 @@ class NK(object):
             if total_value > max_value:
                 max_value = total_value
                 max_state = state
+            elif total_value == max_value:
+                raise Exception('Two states tied for max_value')
         # Divide by N to normalize model value
         return (max_state, max_value / self.N)
