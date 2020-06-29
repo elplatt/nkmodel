@@ -161,3 +161,33 @@ class NK(object):
         if self.exponent != 1:
             max_value = math.pow(max_value, self.exponent)
         return (max_state, max_value)
+    
+    def get_all_state_values(self):
+        # Prevent unnecessary lookups
+        loci = self.loci
+        values = self.values
+        dependence = self.dependence
+        
+        # Loop through all states
+        state_values = {}
+        all_states = itertools.product((0, 1), repeat=self.N)
+        for state in all_states:
+            total_value = 0.0
+            # Calculate value of each locus
+            for n in loci:
+                # Construct locus lookup key
+                label = tuple([state[i] for i in dependence[n]])
+                try:
+                    total_value += values[n][label]
+                except KeyError:
+                    # If key has not been looked up before, generate a value
+                    v = random.random()
+                    values[n][label] = v
+                    total_value += v
+            # Divide by N to normalize model value
+            total_value = total_value / self.N
+            # Adjust value distribution by raising to power of self.exponent
+            if self.exponent != 1:
+                total_value = math.pow(total_value, self.exponent)
+            state_values[state] = total_value
+        return state_values
