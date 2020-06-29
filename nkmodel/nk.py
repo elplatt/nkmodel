@@ -1,4 +1,5 @@
 import itertools
+import math
 import random
 
 class NK(object):
@@ -7,15 +8,17 @@ class NK(object):
     Constructor params:
     N: The number of loci
     K: The number of loci, in addition to self, each locus depends on
+    exponent: (default 1) The raw model values are raised to this exponent, 
     
     For each locus, a lookup table maps K+1 length tuples to values in [0,1].
     These tuples are the state values of that loci's _concern_ (the K+1 loci it depends on),
     in order of increasing index.
     """
     
-    def __init__(self, N, K):
+    def __init__(self, N, K, exponent=1):
         self.N = N
         self.K = K
+        self.exponent = exponent
         self.loci = range(N)
         self.values = [{} for n in self.loci]
         # For locus i, dependence[i] stores the indeces of loci it depends on
@@ -39,7 +42,11 @@ class NK(object):
                 v = random.random()
                 self.values[n][label] = v
                 total_value += v
+        # Normalize value to [0,1]
         total_value /= float(self.N)
+        # Adjust value distribution by raising to power of self.exponent
+        if self.exponent != 1:
+            total_value = math.pow(total_value, self.exponent)
         return total_value
     
     def get_values(self, states):
@@ -67,6 +74,9 @@ class NK(object):
                     values[n][label] = v
                     total_value += v
             results[state_num] = total_value / N
+            # Adjust value distribution by raising to power of self.exponent
+            if self.exponent != 1:
+                results[state_num] = math.pow(results[state_num], self.exponent)
         return results
       
     def get_hillclimb_values(self, states, loci=None):
@@ -107,7 +117,11 @@ class NK(object):
                         self.values[n][label] = v
                     locus_values[n] = v
                 state_states.append(s)
-                state_values.append(sum(locus_values) / float(N))
+                value = sum(locus_values) / float(N)
+                # Adjust value distribution by raising to power of self.exponent
+                if self.exponent != 1:
+                    value = math.pow(value, self.exponent)
+                state_values.append(value)
             result_states[state_num] = state_states
             result_values[state_num] = state_values
         return result_states, result_values
@@ -142,4 +156,8 @@ class NK(object):
             elif total_value == max_value:
                 raise Exception('Two states tied for max_value')
         # Divide by N to normalize model value
-        return (max_state, max_value / self.N)
+        max_value = max_value / self.N
+        # Adjust value distribution by raising to power of self.exponent
+        if self.exponent != 1:
+            max_value = math.pow(max_value, self.exponent)
+        return (max_state, max_value)

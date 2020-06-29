@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="nkmodel",
-    version="0.0.3",
+    version="0.0.4",
     author="Edward L Platt",
     author_email="ed@elplatt.com",
     description="Implementation of Kauffman NK Model",
