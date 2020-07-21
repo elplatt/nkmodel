@@ -162,6 +162,76 @@ class NK(object):
             max_value = math.pow(max_value, self.exponent)
         return (max_state, max_value)
     
+    def get_local_maxima(self):
+        """Find all local maxima in the model.
+        
+        Returns: A set of states. Each state is a local maxima.
+        """
+        # Prevent unnecessary lookups
+        loci = self.loci
+        values = self.values
+        dependence = self.dependence
+        
+        # Store all maxima
+        state_max = dict()
+        
+        # Loop through all states
+        all_states = itertools.product((0, 1), repeat=self.N)
+        for start in all_states:
+            
+            # Use hill-climbing to find local max
+            path = []
+            to_try = [start]
+            path_best_value = 0.0
+            while len(to_try) > 0:
+                
+                # Find state in to_try with highest value
+                best = None
+                best_value = 0.0
+                while len(to_try) > 0:
+                    state = to_try.pop()
+                    
+                    # Calculate state value
+                    total_value = 0.0
+                    # Calculate value of each locus
+                    for n in loci:
+                        # Construct locus lookup key
+                        label = tuple([state[i] for i in dependence[n]])
+                        try:
+                            total_value += values[n][label]
+                        except KeyError:
+                            # If key has not been looked up before, generate a value
+                            v = random.random()
+                            values[n][label] = v
+                            total_value += v
+                    if total_value > best_value:
+                        best_value = total_value
+                        best = state
+                
+                # Check whether best is a local max or mapped to a local max
+                local_max = None
+                if best_value <= path_best_value:
+                    local_max = path[-1]
+                elif best in state_max:
+                    local_max = state_max[best]
+                
+                # If local max is found, map current path
+                if local_max is not None:
+                    for p_state in path:
+                        state_max[p_state] = local_max
+                else:
+                    # Add state to path and update best value
+                    path_best_value = best_value
+                    path.append(best)
+                    
+                    # Add neighbors to to_try
+                    to_try = [
+                        tuple([best[i] if i != n else 1 - best[i] for i in loci])
+                        for n in loci
+                    ]
+        
+        return set(state_max.values())
+
     def get_all_state_values(self):
         # Prevent unnecessary lookups
         loci = self.loci
