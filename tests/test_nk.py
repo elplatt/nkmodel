@@ -1,6 +1,8 @@
 import math
-import nkmodel as nk
 import unittest
+
+import nkmodel as nk
+
 
 stub_values = [
     {(0,0):1/8, (0,1):3/8, (1,0):5/8, (1,1):7/8},
@@ -29,6 +31,25 @@ stub_all_state_values = {
     (1,1,0,0): 13/32, (1,1,0,1): 12/32, (1,1,1,0): 26/32, (1,1,1,1): 19/32
 }
 
+stub_maxima = {
+    (0,0,0,0):(1,1,1,0),
+    (0,0,0,1):(1,1,1,0),
+    (0,0,1,0):(1,1,1,0),
+    (0,0,1,1):(1,1,1,0),
+    (0,1,0,0):(1,1,1,0),
+    (0,1,0,1):(1,1,1,0),
+    (0,1,1,0):(1,1,1,0),
+    (0,1,1,1):(1,1,1,0),
+    (1,0,0,0):(1,1,1,0),
+    (1,0,0,1):(1,1,1,0),
+    (1,0,1,0):(1,1,1,0),
+    (1,0,1,1):(1,1,1,0),
+    (1,1,0,0):(1,1,1,0),
+    (1,1,0,1):(1,1,1,0),
+    (1,1,1,0):(1,1,1,0),
+    (1,1,1,1):(1,1,1,0),
+}
+
 class TestNK(unittest.TestCase):
     
     def test_new(self):
@@ -54,6 +75,13 @@ class TestNK(unittest.TestCase):
         m.dependence = stub_dependence
         state_values = m.get_all_state_values()
         self.assertEqual(state_values,stub_all_state_values)
+
+    def test_maxima(self):
+        m = nk.NK(4, 1)
+        m.values = stub_values
+        m.dependence = stub_dependence
+        state_maxima = m.get_state_maxima_map()
+        self.assertEqual(state_maxima, stub_maxima)
         
     def test_exponent(self):
         m = nk.NK(4, 1, exponent=2)

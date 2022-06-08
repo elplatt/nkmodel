@@ -1,18 +1,19 @@
-import setuptools
+from setuptools import find_packages, setup
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-setuptools.setup(
+setup(
     name="nkmodel",
-    version="0.0.5",
+    version="0.0.6",
     author="Edward L Platt",
     author_email="ed@elplatt.com",
     description="Implementation of Kauffman NK Model",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/elplatt/nkmodel",
-    packages=['nkmodel'],
+    packages=find_packages('src'),
+    package_dir={'': 'src'},
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: BSD License",

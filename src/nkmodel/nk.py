@@ -162,11 +162,8 @@ class NK(object):
             max_value = math.pow(max_value, self.exponent)
         return (max_state, max_value)
     
-    def get_local_maxima(self):
-        """Find all local maxima in the model.
-        
-        Returns: A set of states. Each state is a local maxima.
-        """
+    def get_state_maxima_map(self):
+        """Return a map from each state to its local maximum."""
         # Prevent unnecessary lookups
         loci = self.loci
         values = self.values
@@ -229,6 +226,15 @@ class NK(object):
                         tuple([best[i] if i != n else 1 - best[i] for i in loci])
                         for n in loci
                     ]
+        
+        return state_max
+
+    def get_local_maxima(self):
+        """Find all local maxima in the model.
+        
+        Returns: A set of states. Each state is a local maxima.
+        """
+        state_max = self.get_state_maxima_map()
         
         return set(state_max.values())
 
